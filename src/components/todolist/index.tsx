@@ -2,7 +2,7 @@ import React from "react";
 import './index.scss';
 import ListItem from "../listItem";
 import Filters from "../filters";
-// import { Filter } from "../../types";
+import AddForm from "../addForm";
 
 type Todo = {
     id: number,
@@ -10,20 +10,19 @@ type Todo = {
     complite: boolean,
 }
 
-
 function TodoList() {
     const [filter, setFilter] = React.useState<string>('showAll');
 
-    const todos: Todo[] = [
-        { id: 1, name: 'one', complite: false },
-        { id: 2, name: 'two', complite: false },
-        { id: 3, name: 'three', complite: false },
-        { id: 4, name: 'four', complite: false }
-    ]
+    const [todos, setTodos] = React.useState<Todo[]>([]);
 
-    function updateFilter(val:string){
-        console.log(val);
+    function updateFilter(val: string) {
         setFilter(val)
+    }
+
+    function newTask(s: string) {
+        const todo: Todo = { id: todos.length, name: s, complite: false };
+        setTodos([...todos, todo]);
+
     }
 
     const items = todos.map(el => <ListItem key={el.id} item={el} filter={filter} />)
@@ -32,6 +31,7 @@ function TodoList() {
         <div className="todo-list">
             <Filters filter={filter} setFilter={updateFilter} />
             {items}
+            <AddForm newTask={newTask} />
         </div>
     )
 }
